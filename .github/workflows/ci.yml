@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: ['post-gnome45']
+  pull_request:
+
+jobs:
+  ci:
+    # Merge-blocking: lint + GJS runtime tests + subprocess-free guards must
+    # all pass. There is deliberately no lint-only fallback path.
+    runs-on: [self-hosted, chef-platform-aws-01]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install gjs toolchain
+        run: |
+          if ! command -v gjs >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq gjs glib-networking zip
+          fi
+          gjs --version
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install lint tooling
+        run: npm ci || npm install
+
+      - name: Lint
+        run: npx eslint tailscale-status@maxgallup.github.com tests
+
+      - name: Guard: no privileged subprocesses or zenity/xdg-open
+        run: |
+          ! grep -rnE 'pkexec|zenity|xdg-open' tailscale-status@maxgallup.github.com | grep -vE ':[0-9]+:\s*(//|\*|/\*)' || \
+          { echo "FAIL: pkexec/zenity/xdg-open found in the extension"; exit 1; }
+          ! grep -nE "from 'gi://(St|Clutter)'" tailscale-status@maxgallup.github.com/prefs.js || \
+          { echo "FAIL: prefs.js must not import St/Clutter"; exit 1; }
+
+      - name: GJS unit tests (merge-blocking)
+        run: |
+          TMPDIR="$HOME/tmp" gjs -m tests/run.js
+
+      - name: Compile schemas
+        run: glib-compile-schemas --strict tailscale-status@maxgallup.github.com/schemas/
+
+      - name: Build zip artifact
+        run: |
+          cd tailscale-status@maxgallup.github.com
+          zip -r "../tailscale-status@maxgallup.github.com.zip" *
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tailscale-status@maxgallup.github.com
+          path: tailscale-status@maxgallup.github.com.zip

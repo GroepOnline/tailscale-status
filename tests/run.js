@@ -12,6 +12,7 @@ import System from 'system';
 import './lib/localapi.test.js';
 import './lib/nodes.test.js';
 import './lib/service.test.js';
+import './lib/portal.test.js';
 
 import {runAll} from './harness.js';
 

@@ -1,5 +1,4 @@
 import GLib from 'gi://GLib';
-import Gio from 'gi://Gio';
 import {openFilePicker, PortalError} from '../../tailscale-status@maxgallup.github.com/lib/portal.js';
 import {register, assert, assertEqual, withTimeout} from '../harness.js';
 

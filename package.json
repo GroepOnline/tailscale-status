@@ -1,0 +1,13 @@
+{
+    "name": "tailscale-status-dev",
+    "private": true,
+    "description": "Dev tooling (lint) for the tailscale-status GNOME Shell extension. The extension itself has no runtime npm dependencies.",
+    "type": "module",
+    "scripts": {
+        "lint": "eslint tailscale-status@maxgallup.github.com tests",
+        "test": "gjs -m tests/run.js"
+    },
+    "devDependencies": {
+        "eslint": "^9.0.0"
+    }
+}

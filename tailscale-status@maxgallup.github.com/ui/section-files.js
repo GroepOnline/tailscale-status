@@ -9,8 +9,8 @@ import {openFilePicker, PortalError} from '../lib/portal.js';
 
 /**
  * Taildrop without subprocesses: sending goes through the xdg-desktop-portal
- * file chooser plus LocalAPI `file-put`; receiving through the LocalAPI
- * `files/` endpoints. Replaces the old zenity + `pkexec tailscale file get`.
+ * file chooser plus the LocalAPI `file-put` endpoint; receiving through the
+ * LocalAPI `files/` endpoints. Replaces the old helper-tool based flow.
  */
 export const FilesSection = GObject.registerClass(
     {

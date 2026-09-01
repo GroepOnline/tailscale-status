@@ -19,17 +19,17 @@ export const TogglesSection = GObject.registerClass(
 
             this._shieldItem = new PopupMenu.PopupSwitchMenuItem('Block Incoming', false);
             this._shieldItem.connect('activate', () => {
-                this._apply('setShieldsUp', this._shieldItem.state, this._shieldItem);
+                this._apply('setShieldsUp', this._shieldItem.state);
             });
 
             this._routesItem = new PopupMenu.PopupSwitchMenuItem('Accept Routes', false);
             this._routesItem.connect('activate', () => {
-                this._apply('setAcceptRoutes', this._routesItem.state, this._routesItem);
+                this._apply('setAcceptRoutes', this._routesItem.state);
             });
 
             this._lanItem = new PopupMenu.PopupSwitchMenuItem('Allow Direct LAN Access', false);
             this._lanItem.connect('activate', () => {
-                this._apply('setAllowLanAccess', this._lanItem.state, this._lanItem);
+                this._apply('setAllowLanAccess', this._lanItem.state);
             });
 
             this.addMenuItem(this._shieldItem);
@@ -59,7 +59,7 @@ export const TogglesSection = GObject.registerClass(
             this._syncing = false;
         }
 
-        async _apply(method, value, item) {
+        async _apply(method, value) {
             if (this._syncing) {
                 return;
             }

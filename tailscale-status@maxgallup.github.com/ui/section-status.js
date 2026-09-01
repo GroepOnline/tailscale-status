@@ -87,8 +87,8 @@ export const StatusSection = GObject.registerClass(
             }
             try {
                 await this._service.loginInteractive();
-            } catch (e) {
-                // error signal carries it to the user; nothing else to do here
+            } catch {
+                // the service error signal carries it to the user
             }
         }
 
