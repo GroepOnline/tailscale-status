@@ -6,6 +6,20 @@
         <summary>Login-Server Url</summary>
         <description>If you are using Headscale for your control server, use your Headscale instance's URL.</description>
     </key>
-    
+    <key name="poll-interval" type="u">
+        <default>60</default>
+        <summary>Poll interval in seconds</summary>
+        <description>How often the panel refreshes tailnet state while the extension is enabled. 0 disables periodic polling; the menu still refreshes when opened.</description>
+    </key>
+    <key name="auto-copy-node-address" type="b">
+        <default>true</default>
+        <summary>Notify after copying a node address</summary>
+        <description>Clicking a node always copies its address; with this enabled a desktop notification confirms the copy.</description>
+    </key>
+    <key name="socket-path" type="s">
+        <default>"/run/tailscale/tailscaled.sock"</default>
+        <summary>tailscaled socket path</summary>
+        <description>Path of the tailscaled unix socket. Override for non-standard installs (some distros or user-mode tailscaled use a different path).</description>
+    </key>
   </schema>
 </schemalist>
