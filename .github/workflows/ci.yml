@@ -2,14 +2,17 @@ name: CI
 
 on:
   push:
-    branches: ['post-gnome45']
+    branches: ["post-gnome45"]
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   ci:
     # Merge-blocking: lint + GJS runtime tests + subprocess-free guards must
     # all pass. There is deliberately no lint-only fallback path.
-    runs-on: [self-hosted, chef-platform-aws-01]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
@@ -23,7 +26,7 @@ jobs:
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install lint tooling
         run: npm ci || npm install
@@ -31,7 +34,7 @@ jobs:
       - name: Lint
         run: npx eslint tailscale-status@maxgallup.github.com tests
 
-      - name: Guard: no privileged subprocesses or zenity/xdg-open
+      - name: "Guard: no privileged subprocesses or zenity/xdg-open"
         run: |
           ! grep -rnE 'pkexec|zenity|xdg-open' tailscale-status@maxgallup.github.com | grep -vE ':[0-9]+:\s*(//|\*|/\*)' || \
           { echo "FAIL: pkexec/zenity/xdg-open found in the extension"; exit 1; }
