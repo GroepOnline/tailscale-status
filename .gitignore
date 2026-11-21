@@ -2,3 +2,5 @@ tailscale-status@maxgallup.github.com.zip
 
 
 .compound-engineering/*.local.yaml
+
+node_modules/
