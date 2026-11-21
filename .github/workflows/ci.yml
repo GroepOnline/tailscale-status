@@ -43,6 +43,7 @@ jobs:
 
       - name: GJS unit tests (merge-blocking)
         run: |
+          mkdir -p "$HOME/tmp"
           TMPDIR="$HOME/tmp" gjs -m tests/run.js
 
       - name: Compile schemas
